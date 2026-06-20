@@ -9,6 +9,10 @@ const userRoutes =
 require(
 './routes/user.routes'
 )
+const restaurantRoutes =
+require(
+'./routes/restaurant.routes'
+)
 const app =
 express()
 
@@ -23,6 +27,10 @@ authRoutes
 app.use(
 '/api/users',
 userRoutes
+)
+app.use(
+'/api/restaurants',
+restaurantRoutes
 )
 app.get(
 '/',
