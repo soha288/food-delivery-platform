@@ -43,6 +43,14 @@ async (req, res) => {
         $options: 'i'
       }
     }
+   if (req.query.cuisine) {
+
+  query.cuisine = {
+    $regex:
+      req.query.cuisine,
+    $options: 'i'
+  }
+}
 
     const restaurants =
       await Restaurant.find(query)
