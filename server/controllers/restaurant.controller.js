@@ -27,7 +27,31 @@ async (req, res) => {
     })
   }
 }
+const getRestaurants =
+async (req, res) => {
 
+  try {
+
+    const restaurants =
+      await Restaurant.find()
+
+    res.status(200).json({
+      success: true,
+      count:
+        restaurants.length,
+      data: restaurants
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message
+    })
+  }
+}
 module.exports = {
-  createRestaurant
+  createRestaurant,
+  getRestaurants
 }
