@@ -32,8 +32,20 @@ async (req, res) => {
 
   try {
 
+    const { name } = req.query
+
+    let query = {}
+
+    if (name) {
+
+      query.name = {
+        $regex: name,
+        $options: 'i'
+      }
+    }
+
     const restaurants =
-      await Restaurant.find()
+      await Restaurant.find(query)
 
     res.status(200).json({
       success: true,
