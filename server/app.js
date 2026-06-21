@@ -13,6 +13,10 @@ const restaurantRoutes =
 require(
 './routes/restaurant.routes'
 )
+const menuRoutes =
+require(
+'./routes/menu.routes'
+)
 const app =
 express()
 
@@ -23,6 +27,10 @@ express.json()
 app.use(
 '/api/auth',
 authRoutes
+)
+app.use(
+'/api/menu',
+menuRoutes
 )
 app.use(
 '/api/users',
