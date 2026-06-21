@@ -5,7 +5,7 @@ const router =
 express.Router()
 
 const {
-  createMenuItem,getMenuItems
+  createMenuItem,getMenuItems,getMenuByRestaurant
 } =
 require(
 '../controllers/menu.controller'
@@ -18,6 +18,10 @@ router.post(
 router.get(
   '/',
   getMenuItems
+)
+router.get(
+  '/restaurant/:restaurantId',
+  getMenuByRestaurant
 )
 module.exports =
 router

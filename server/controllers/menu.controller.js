@@ -53,7 +53,35 @@ async (req, res) => {
     })
   }
 }
+const getMenuByRestaurant =
+async (req, res) => {
+
+  try {
+
+    const menuItems =
+      await Menu.find({
+        restaurant:
+        req.params.restaurantId
+      })
+
+    res.status(200).json({
+      success: true,
+      count:
+        menuItems.length,
+      data: menuItems
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message
+    })
+  }
+}
 module.exports = {
   createMenuItem,
-  getMenuItems
+  getMenuItems,
+  getMenuByRestaurant
 }
