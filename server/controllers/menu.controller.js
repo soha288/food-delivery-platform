@@ -80,8 +80,37 @@ async (req, res) => {
     })
   }
 }
+const updateMenuItem =
+async (req, res) => {
+
+  try {
+
+    const menuItem =
+      await Menu.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true
+        }
+      )
+
+    res.status(200).json({
+      success: true,
+      data: menuItem
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message
+    })
+  }
+}
 module.exports = {
   createMenuItem,
   getMenuItems,
-  getMenuByRestaurant
+  getMenuByRestaurant,
+  updateMenuItem
 }
