@@ -47,6 +47,17 @@ app.get(
 'Food Delivery API Running'
   )
 })
+app.get(
+  '/health',
+  (req, res) => {
 
+    res.status(200).json({
+      success: true,
+      message:
+        'API is healthy'
+    })
+
+  }
+)
 module.exports =
 app
