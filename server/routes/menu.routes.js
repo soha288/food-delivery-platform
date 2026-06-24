@@ -5,7 +5,7 @@ const router =
 express.Router()
 
 const {
-  createMenuItem,getMenuItems,getMenuByRestaurant,updateMenuItem
+  createMenuItem,getMenuItems,getMenuByRestaurant,updateMenuItem,deleteMenuItem
 } =
 require(
 '../controllers/menu.controller'
@@ -26,6 +26,10 @@ router.get(
 router.put(
   '/:id',
   updateMenuItem
+)
+router.delete(
+  '/:id',
+  deleteMenuItem
 )
 module.exports =
 router

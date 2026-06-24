@@ -108,9 +108,44 @@ async (req, res) => {
     })
   }
 }
+const deleteMenuItem =
+async (req, res) => {
+
+  try {
+
+    const menuItem =
+      await Menu.findByIdAndDelete(
+        req.params.id
+      )
+
+    if (!menuItem) {
+
+      return res.status(404).json({
+        success: false,
+        message:
+          'Menu item not found'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message:
+        'Menu item deleted successfully'
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message:
+        error.message
+    })
+  }
+}
 module.exports = {
   createMenuItem,
   getMenuItems,
   getMenuByRestaurant,
-  updateMenuItem
+  updateMenuItem,
+  deleteMenuItem
 }
