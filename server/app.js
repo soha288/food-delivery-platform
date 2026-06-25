@@ -17,6 +17,10 @@ const menuRoutes =
 require(
 './routes/menu.routes'
 )
+const cartRoutes =
+require(
+'./routes/cart.routes'
+)
 const app =
 express()
 
@@ -27,6 +31,10 @@ express.json()
 app.use(
 '/api/auth',
 authRoutes
+)
+app.use(
+'/api/cart',
+cartRoutes
 )
 app.use(
 '/api/menu',
