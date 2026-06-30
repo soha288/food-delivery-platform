@@ -27,7 +27,40 @@ function Cart() {
     }
 
   }
+const placeOrder = async () => {
 
+  try {
+
+    const userId = localStorage.getItem("userId")
+
+    const items = cartItems.map(item => ({
+      menuItem: item.menuItem._id,
+      quantity: item.quantity
+    }))
+
+    const totalAmount = cartItems.reduce(
+      (sum, item) =>
+        sum + item.menuItem.price * item.quantity,
+      0
+    )
+
+    await api.post("/orders", {
+      user: userId,
+      items,
+      totalAmount,
+      deliveryAddress: "RGUKT Basar Hostel",
+      paymentMethod: "Cash"
+    })
+
+    alert("Order placed successfully!")
+
+  } catch (error) {
+
+    console.log(error)
+
+  }
+
+}
   return (
 
     <>
@@ -71,10 +104,11 @@ function Cart() {
         }
         {cartItems.length > 0 && (
         <button
-          className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600"
-        >
-          Place Order
-        </button>
+  onClick={placeOrder}
+  className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600"
+>
+  Place Order
+</button>
       )}
       </div>
 
