@@ -8,14 +8,39 @@ import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 
 function App() {
+
+  const isLoggedIn = localStorage.getItem("token")
+
   return (
     <Routes>
+
       <Route path="/" element={<Login />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/restaurants" element={<Restaurants />} />
-      <Route path="/menu/:restaurantId" element={<Menu />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/orders" element={<Orders />} />
+
+      <Route
+        path="/home"
+        element={isLoggedIn ? <Home /> : <Login />}
+      />
+
+      <Route
+        path="/restaurants"
+        element={isLoggedIn ? <Restaurants /> : <Login />}
+      />
+
+      <Route
+        path="/menu/:restaurantId"
+        element={isLoggedIn ? <Menu /> : <Login />}
+      />
+
+      <Route
+        path="/cart"
+        element={isLoggedIn ? <Cart /> : <Login />}
+      />
+
+      <Route
+        path="/orders"
+        element={isLoggedIn ? <Orders /> : <Login />}
+      />
+
     </Routes>
   )
 }

@@ -6,7 +6,7 @@ import RestaurantCard from '../components/RestaurantCard'
 import api from '../services/api'
 
 function Restaurants() {
-
+  const [search, setSearch] = useState("")
   const [restaurants, setRestaurants] = useState([])
 
   useEffect(() => {
@@ -30,7 +30,9 @@ function Restaurants() {
     }
 
   }
-
+const filteredRestaurants = restaurants.filter((restaurant) =>
+  restaurant.name.toLowerCase().includes(search.toLowerCase())
+)
   return (
 
     <>
@@ -44,10 +46,16 @@ function Restaurants() {
           Restaurants
 
         </h1>
-
+         <input
+  type="text"
+  placeholder="Search restaurants..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="border p-3 rounded-lg w-full mb-6"
+/>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          {restaurants.map((restaurant) => (
+          {filteredRestaurants.map((restaurant) => (
 
             <RestaurantCard
               key={restaurant._id}

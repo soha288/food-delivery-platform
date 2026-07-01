@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -46,7 +47,7 @@ const addToCart = async (item) => {
       quantity: 1
     })
 
-    alert('Added to cart successfully')
+    toast.success("Added to cart successfully")
 
   } catch (error) {
 

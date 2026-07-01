@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import api from '../services/api'
@@ -9,7 +11,7 @@ function Cart() {
   useEffect(() => {
     fetchCart()
   }, [])
-
+  const navigate = useNavigate()
   const fetchCart = async () => {
 
     try {
@@ -52,11 +54,23 @@ const placeOrder = async () => {
       paymentMethod: "Cash"
     })
 
-    alert("Order placed successfully!")
+    // Remove all cart items
+    for (const item of cartItems) {
+      await api.delete(`/cart/${item._id}`)
+    }
+
+    // Clear frontend cart
+    setCartItems([])
+
+    toast.success("Order placed successfully!")
+
+    navigate("/orders")
 
   } catch (error) {
 
     console.log(error)
+
+    toast.error("Failed to place order")
 
   }
 

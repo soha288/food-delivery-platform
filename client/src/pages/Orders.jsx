@@ -41,12 +41,20 @@ function Orders() {
 
           <div
             key={order._id}
-            className="bg-white shadow rounded-xl p-5 mb-5"
+            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition p-6 mb-6"
           >
 
-            <p>
-              <strong>Status:</strong> {order.status}
-            </p>
+            <div className="flex items-center gap-2 mb-3">
+
+  <span className="font-semibold">
+    Status:
+  </span>
+
+  <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
+    {order.status}
+  </span>
+
+</div>
 
             <p>
               <strong>Total:</strong> ₹{order.totalAmount}
@@ -59,7 +67,11 @@ function Orders() {
             <p>
               <strong>Delivery:</strong> {order.deliveryAddress}
             </p>
-
+            
+         <p className="text-gray-500 mt-3">
+  Ordered on{" "}
+  {new Date(order.createdAt).toLocaleDateString()}
+</p>
           </div>
 
         ))}
