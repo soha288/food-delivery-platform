@@ -41,11 +41,9 @@ const filteredRestaurants = restaurants.filter((restaurant) =>
 
       <div className="p-8">
 
-        <h1 className="text-3xl font-bold mb-6">
-
-          Restaurants
-
-        </h1>
+        <h1 className="text-4xl font-bold mb-6">
+  🍽️ Explore Restaurants
+</h1>
          <input
   type="text"
   placeholder="Search restaurants..."

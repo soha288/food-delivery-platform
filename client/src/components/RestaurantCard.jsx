@@ -4,11 +4,11 @@ function RestaurantCard({ restaurant }) {
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
 
-      <img
-        src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600"
-        alt="Restaurant"
-        className="w-full h-48 object-cover"
-      />
+     <img
+  src={restaurant.image}
+  alt={restaurant.name}
+  className="w-full h-48 object-cover"
+/>
 
       <div className="p-5">
 

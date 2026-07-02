@@ -14,20 +14,20 @@ const logout = () => {
 
 }
   return (
-    <nav className="bg-orange-500 text-white px-8 py-4 flex justify-between items-center">
+    <nav className="bg-gray-900 text-white px-8 py-4 flex justify-between items-center">
 
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl font-bold flex items-center gap-2">
         🍔 Food Delivery
       </h1>
 
-      <div className="flex gap-6">
-        <Link to="/home">Home</Link>
-        <Link to="/restaurants">Restaurants</Link>
-        <Link to="/cart">Cart</Link>
-        <Link to="/orders">Orders</Link>
+      <div className="flex gap-6 items-center">
+        <Link to="/home" className="hover:text-orange-400 transition-colors">Home</Link>
+        <Link to="/restaurants" className="hover:text-orange-400 transition-colors">Restaurants</Link>
+        <Link to="/cart" className="hover:text-orange-400 transition-colors">Cart</Link>
+        <Link to="/orders" className="hover:text-orange-400 transition-colors">Orders</Link>
         <button
   onClick={logout}
-  className="bg-white text-orange-600 px-4 py-1 rounded-lg font-medium hover:bg-gray-100"
+  className="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors"
 >
   Logout
 </button>
