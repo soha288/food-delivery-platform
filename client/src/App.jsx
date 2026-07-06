@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-
+import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Restaurants from './pages/Restaurants'
@@ -35,7 +35,10 @@ function App() {
         path="/cart"
         element={isLoggedIn ? <Cart /> : <Login />}
       />
-
+      <Route
+  path="/checkout"
+  element={isLoggedIn ? <Checkout /> : <Login />}
+/>
       <Route
         path="/orders"
         element={isLoggedIn ? <Orders /> : <Login />}

@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import api from '../services/api'
@@ -7,11 +7,22 @@ import api from '../services/api'
 function Cart() {
 
   const [cartItems, setCartItems] = useState([])
+  const subtotal = cartItems.reduce(
+  (sum, item) => sum + item.menuItem.price * item.quantity,
+  0
+)
+
+const deliveryFee = subtotal > 0 ? 40 : 0
+
+const grandTotal = subtotal + deliveryFee
 
   useEffect(() => {
     fetchCart()
   }, [])
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+
+const isCheckout = searchParams.get("checkout") === "true"
   const fetchCart = async () => {
 
     try {
@@ -29,6 +40,37 @@ function Cart() {
     }
 
   }
+const updateQuantity = async (id, quantity) => {
+
+  try {
+
+    if (quantity < 1) {
+
+      await api.delete(`/cart/${id}`)
+
+      toast.success("Item removed from cart")
+
+      fetchCart()
+
+      return
+
+    }
+
+    await api.put(`/cart/${id}`, {
+      quantity
+    })
+
+    fetchCart()
+
+  } catch (error) {
+
+    console.log(error)
+
+    toast.error("Failed to update cart")
+
+  }
+
+}
 const placeOrder = async () => {
 
   try {
@@ -40,18 +82,14 @@ const placeOrder = async () => {
       quantity: item.quantity
     }))
 
-    const totalAmount = cartItems.reduce(
-      (sum, item) =>
-        sum + item.menuItem.price * item.quantity,
-      0
-    )
+    const totalAmount = grandTotal
 
     await api.post("/orders", {
       user: userId,
       items,
       totalAmount,
-      deliveryAddress: "RGUKT Basar Hostel",
-      paymentMethod: "Cash"
+      deliveryAddress: localStorage.getItem("address"),
+paymentMethod: "Cash"
     })
 
     // Remove all cart items
@@ -70,7 +108,9 @@ const placeOrder = async () => {
 
     console.log(error)
 
-    toast.error("Failed to place order")
+console.log(error.response?.data)
+
+toast.error("Failed to place order")
 
   }
 
@@ -107,23 +147,82 @@ const placeOrder = async () => {
                   ₹ {item.menuItem.price}
                 </p>
 
-                <p>
-                  Quantity: {item.quantity}
-                </p>
+                <div className="flex items-center gap-4 mt-3">
+
+  <button
+    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+    className="bg-red-500 text-white w-8 h-8 rounded-full"
+  >
+    -
+  </button>
+
+  <span className="font-bold">
+    {item.quantity}
+  </span>
+
+  <button
+    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+    className="bg-green-500 text-white w-8 h-8 rounded-full"
+  >
+    +
+  </button>
+  <button
+  onClick={() => updateQuantity(item._id, 0)}
+  className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+>
+  Remove Item
+</button>
+
+</div>
 
               </div>
 
             ))
           )
         }
-        {cartItems.length > 0 && (
-        <button
-  onClick={placeOrder}
-  className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600"
->
-  Place Order
-</button>
-      )}
+        <div className="bg-white shadow rounded-xl p-5 mt-6">
+
+  <h2 className="text-2xl font-bold mb-4">
+    Order Summary
+  </h2>
+
+  <div className="flex justify-between mb-2">
+    <span>Subtotal</span>
+    <span>₹ {subtotal}</span>
+  </div>
+
+  <div className="flex justify-between mb-2">
+    <span>Delivery Fee</span>
+    <span>₹ {deliveryFee}</span>
+  </div>
+
+  <hr className="my-3" />
+
+  <div className="flex justify-between text-xl font-bold">
+    <span>Grand Total</span>
+    <span>₹ {grandTotal}</span>
+  </div>
+
+</div>
+       {!isCheckout ? (
+
+  <button
+    onClick={() => navigate("/checkout")}
+    className="mt-6 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600"
+  >
+    Proceed to Checkout
+  </button>
+
+) : (
+
+  <button
+    onClick={placeOrder}
+    className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
+  >
+    Place Order
+  </button>
+
+)}
       </div>
 
     </>

@@ -5,7 +5,7 @@ const router =
 express.Router()
 
 const {
-  addToCart,getCart,removeFromCart
+  addToCart,getCart,removeFromCart,updateCartQuantity
 } =
 require(
 '../controllers/cart.controller'
@@ -21,5 +21,6 @@ router.get(
 )
 router.delete(
 '/:id',removeFromCart)
+router.put('/:id', updateCartQuantity)
 module.exports =
 router
