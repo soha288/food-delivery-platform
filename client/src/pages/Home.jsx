@@ -12,6 +12,15 @@ function Home() {
       offset: 100
     })
   }, [])
+  const role = localStorage.getItem("role")
+
+if (role !== "Customer") {
+  return (
+    <div className="flex justify-center items-center h-screen text-3xl font-bold">
+      Access Denied
+    </div>
+  )
+}
   return (
     <>
       <Navbar />

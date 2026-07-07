@@ -58,12 +58,33 @@ function Checkout() {
           <option>UPI</option>
           <option>Card</option>
         </select>
+        <div className="bg-gray-100 rounded-lg p-4 mb-6">
 
+  <h2 className="font-bold text-lg mb-2">
+    Order Summary
+  </h2>
+
+  <div className="flex justify-between mb-2">
+    <span>Delivery Fee</span>
+    <span>₹40</span>
+  </div>
+
+  <div className="flex justify-between mb-2">
+    <span>Payment</span>
+    <span>Cash</span>
+  </div>
+
+  <div className="flex justify-between">
+    <span>Delivery Address</span>
+    <span>{address || "Not entered"}</span>
+  </div>
+
+</div>
         <button
           onClick={handleCheckout}
           className="w-full bg-orange-500 text-white py-3 rounded-lg"
         >
-          Continue
+          Proceed to Place Order
         </button>
 
       </div>

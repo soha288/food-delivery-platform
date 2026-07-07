@@ -1,4 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
+import DeliveryDashboard from "./pages/DeliveryDashboard";
+import RestaurantDashboard from './pages/RestaurantDashboard'
 import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -43,7 +45,14 @@ function App() {
         path="/orders"
         element={isLoggedIn ? <Orders /> : <Login />}
       />
-
+       <Route
+  path="/restaurant-dashboard"
+  element={isLoggedIn ? <RestaurantDashboard /> : <Login />}
+/>
+<Route
+  path="/delivery-dashboard"
+  element={isLoggedIn ? <DeliveryDashboard /> : <Login />}
+/>
     </Routes>
   )
 }
