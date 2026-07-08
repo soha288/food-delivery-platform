@@ -1,60 +1,104 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Restaurants from "./pages/Restaurants";
+import Menu from "./pages/Menu";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Orders from "./pages/Orders";
+import RestaurantDashboard from "./pages/RestaurantDashboard";
 import DeliveryDashboard from "./pages/DeliveryDashboard";
-import RestaurantDashboard from './pages/RestaurantDashboard'
-import Checkout from './pages/Checkout'
-import Login from './pages/Login'
-import Home from './pages/Home'
-import Restaurants from './pages/Restaurants'
-import Menu from './pages/Menu'
-import Cart from './pages/Cart'
-import Orders from './pages/Orders'
 
 function App() {
 
-  const isLoggedIn = localStorage.getItem("token")
+  const isLoggedIn = localStorage.getItem("token");
 
   return (
+
     <Routes>
 
-      <Route path="/" element={<Login />} />
-
       <Route
-        path="/home"
-        element={isLoggedIn ? <Home /> : <Login />}
+        path="/"
+        element={<Login />}
       />
 
       <Route
-        path="/restaurants"
-        element={isLoggedIn ? <Restaurants /> : <Login />}
-      />
+  path="/home"
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Home />
+    </ProtectedRoute>
+  }
+/>
 
-      <Route
-        path="/menu/:restaurantId"
-        element={isLoggedIn ? <Menu /> : <Login />}
-      />
+     <Route
+  path="/restaurants"
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Restaurants />
+    </ProtectedRoute>
+  }
+/>
 
-      <Route
-        path="/cart"
-        element={isLoggedIn ? <Cart /> : <Login />}
-      />
+     <Route
+  path="/menu/:restaurantId"
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Menu />
+    </ProtectedRoute>
+  }
+/>
+
+     <Route
+  path="/cart"
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Cart />
+    </ProtectedRoute>
+  }
+/>
+
       <Route
   path="/checkout"
-  element={isLoggedIn ? <Checkout /> : <Login />}
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Checkout />
+    </ProtectedRoute>
+  }
 />
+
+     <Route
+  path="/orders"
+  element={
+    <ProtectedRoute allowedRole="customer">
+      <Orders />
+    </ProtectedRoute>
+  }
+/>
+
       <Route
-        path="/orders"
-        element={isLoggedIn ? <Orders /> : <Login />}
-      />
-       <Route
   path="/restaurant-dashboard"
-  element={isLoggedIn ? <RestaurantDashboard /> : <Login />}
+  element={
+    <ProtectedRoute allowedRole="restaurant_owner">
+      <RestaurantDashboard />
+    </ProtectedRoute>
+  }
 />
-<Route
+
+      <Route
   path="/delivery-dashboard"
-  element={isLoggedIn ? <DeliveryDashboard /> : <Login />}
+  element={
+    <ProtectedRoute allowedRole="delivery_partner">
+      <DeliveryDashboard />
+    </ProtectedRoute>
+  }
 />
+
     </Routes>
-  )
+
+  );
+
 }
 
-export default App
+export default App;

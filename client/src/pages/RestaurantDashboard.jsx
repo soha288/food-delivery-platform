@@ -21,15 +21,24 @@ function RestaurantDashboard() {
       console.log(error);
     }
   };
-const role = localStorage.getItem("role")
+  const updateStatus = async (id, status) => {
 
-if (role !== "Restaurant Partner") {
-  return (
-    <div className="flex justify-center items-center h-screen text-3xl font-bold">
-      Access Denied
-    </div>
-  )
-}
+  try {
+
+    await api.put(`/orders/${id}`, {
+      status
+    });
+
+    fetchDashboardData();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
   const totalOrders = orders.length;
 
   const revenue = orders.reduce(
@@ -197,8 +206,49 @@ if (role !== "Restaurant Partner") {
                   </td>
 
                   <td>
-                    {order.status}
-                  </td>
+
+  {order.status === "Delivered" ? (
+
+  <span className="bg-green-100 text-green-700 px-3 py-2 rounded-lg font-semibold">
+    ✅ Delivered
+  </span>
+
+) : (
+
+  <select
+    value={order.status}
+    onChange={(e) =>
+      updateStatus(order._id, e.target.value)
+    }
+    className="border rounded-lg p-2"
+  >
+
+    {order.status === "Pending" && (
+      <>
+        <option>Pending</option>
+        <option>Preparing</option>
+      </>
+    )}
+
+    {order.status === "Preparing" && (
+      <>
+        <option>Preparing</option>
+        <option>Out for Delivery</option>
+      </>
+    )}
+
+    {order.status === "Out for Delivery" && (
+      <>
+        <option>Out for Delivery</option>
+      </>
+    )}
+
+  </select>
+
+)}
+ 
+
+</td>
 
                 </tr>
 

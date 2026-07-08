@@ -43,8 +43,37 @@ const getOrders = async (req, res) => {
 
   }
 }
+const updateOrderStatus = async (req, res) => {
 
+  try {
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: req.body.status
+      },
+      {
+        new: true
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: order
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
+};
 module.exports = {
   placeOrder,
-  getOrders
+  getOrders,
+  updateOrderStatus
 }

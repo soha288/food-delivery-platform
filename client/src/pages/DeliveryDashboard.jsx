@@ -6,30 +6,52 @@ function DeliveryDashboard() {
 
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-const role = localStorage.getItem("role")
+ 
 
-if (role !== "Delivery Partner") {
-  return (
-    <div className="flex justify-center items-center h-screen text-3xl font-bold">
-      Access Denied
-    </div>
-  )
-}
   const fetchOrders = async () => {
+
     try {
 
       const res = await api.get("/orders");
-      setOrders(res.data.data);
+
+      setOrders(
+        res.data.data.filter(
+          order => order.status === "Out for Delivery"
+        )
+      );
 
     } catch (error) {
+
       console.log(error);
+
     }
+
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const markDelivered = async (id) => {
+
+    try {
+
+      await api.put(`/orders/${id}`, {
+        status: "Delivered"
+      });
+
+      fetchOrders();
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
   };
 
   return (
+
     <>
       <Navbar />
 
@@ -51,10 +73,21 @@ if (role !== "Delivery Partner") {
 
               <tr className="border-b">
 
-                <th className="text-left py-3">Customer</th>
-                <th className="text-left">Address</th>
-                <th className="text-left">Total</th>
-                <th className="text-left">Status</th>
+                <th className="text-left py-3">
+                  Customer
+                </th>
+
+                <th className="text-left">
+                  Address
+                </th>
+
+                <th className="text-left">
+                  Total
+                </th>
+
+                <th className="text-left">
+                  Action
+                </th>
 
               </tr>
 
@@ -64,7 +97,10 @@ if (role !== "Delivery Partner") {
 
               {orders.map(order => (
 
-                <tr key={order._id} className="border-b">
+                <tr
+                  key={order._id}
+                  className="border-b"
+                >
 
                   <td className="py-3">
                     {order.user?.name}
@@ -79,7 +115,26 @@ if (role !== "Delivery Partner") {
                   </td>
 
                   <td>
-                    {order.status}
+
+                    {order.status === "Delivered" ? (
+
+                      <span className="text-green-600 font-bold">
+                        Delivered
+                      </span>
+
+                    ) : (
+
+                      <button
+                        onClick={() =>
+                          markDelivered(order._id)
+                        }
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                      >
+                        Mark Delivered
+                      </button>
+
+                    )}
+
                   </td>
 
                 </tr>
@@ -95,7 +150,9 @@ if (role !== "Delivery Partner") {
       </div>
 
     </>
+
   );
+
 }
 
 export default DeliveryDashboard;

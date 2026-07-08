@@ -9,29 +9,29 @@ function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [role, setRole] = useState("Customer")
 
   useEffect(() => {
 
     const token = localStorage.getItem("token")
+    const role = localStorage.getItem("role")
 
-    if (token) {
+    if (token && role) {
 
-      const savedRole = localStorage.getItem("role")
-
-      if (savedRole === "Customer") {
+      if (role === "customer") {
         navigate("/home")
       }
-      else if (savedRole === "Restaurant Partner") {
+
+      else if (role === "restaurant_owner") {
         navigate("/restaurant-dashboard")
       }
-      else if (savedRole === "Delivery Partner") {
+
+      else if (role === "delivery_partner") {
         navigate("/delivery-dashboard")
       }
 
     }
 
-  }, [])
+  }, [navigate])
 
   const handleLogin = async () => {
 
@@ -45,18 +45,32 @@ function Login() {
       localStorage.setItem("token", res.data.token)
       localStorage.setItem("userId", res.data.user.id)
       localStorage.setItem("name", res.data.user.name)
-      localStorage.setItem("role", role)
+      localStorage.setItem("role", res.data.user.role)
 
       toast.success("Login Successful!")
 
-      if (role === "Customer") {
+      if (res.data.user.role === "customer") {
+
         navigate("/home")
+
       }
-      else if (role === "Restaurant Partner") {
+
+      else if (res.data.user.role === "restaurant_owner") {
+
         navigate("/restaurant-dashboard")
+
       }
-      else {
+
+      else if (res.data.user.role === "delivery_partner") {
+
         navigate("/delivery-dashboard")
+
+      }
+
+      else {
+
+        navigate("/")
+
       }
 
     } catch (error) {
@@ -77,16 +91,6 @@ function Login() {
         <h1 className="text-3xl font-bold text-center text-orange-600 mb-6">
           Food Delivery
         </h1>
-
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className="w-full border rounded-lg p-3 mb-4"
-        >
-          <option>Customer</option>
-          <option>Restaurant Partner</option>
-          <option>Delivery Partner</option>
-        </select>
 
         <input
           type="email"
@@ -116,6 +120,7 @@ function Login() {
     </div>
 
   )
+
 }
 
 export default Login
