@@ -24,7 +24,7 @@ function Navbar() {
 
       <div className="flex gap-6 items-center">
 
-        {role === "Customer" && (
+        {role === "customer" && (
           <>
             <Link
               to="/home"
@@ -56,26 +56,22 @@ function Navbar() {
           </>
         )}
 
-        {role === "Restaurant Partner" && (
-          <>
-            <Link
-              to="/restaurant-dashboard"
-              className="hover:text-orange-400"
-            >
-              Dashboard
-            </Link>
-          </>
+        {role === "restaurant_owner" && (
+          <Link
+            to="/restaurant-dashboard"
+            className="hover:text-orange-400"
+          >
+            Dashboard
+          </Link>
         )}
 
-        {role === "Delivery Partner" && (
-          <>
-            <Link
-              to="/delivery-dashboard"
-              className="hover:text-orange-400"
-            >
-              Delivery Dashboard
-            </Link>
-          </>
+        {role === "delivery_partner" && (
+          <Link
+            to="/delivery-dashboard"
+            className="hover:text-orange-400"
+          >
+            Delivery Dashboard
+          </Link>
         )}
 
         <button
