@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Restaurants from "./pages/Restaurants";
@@ -22,7 +23,10 @@ function App() {
         path="/"
         element={<Login />}
       />
-
+     <Route
+  path="/register"
+  element={<Register />}
+/>
       <Route
   path="/home"
   element={
