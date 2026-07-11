@@ -5,6 +5,17 @@ import api from "../services/api";
 function RestaurantDashboard() {
   const [orders, setOrders] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+const [newItem, setNewItem] = useState({
+  name: "",
+  description: "",
+  price: "",
+  category: "",
+  image: "",
+  restaurant: "",
+  isAvailable: true
+});
 
   useEffect(() => {
     fetchDashboardData();
@@ -38,7 +49,48 @@ function RestaurantDashboard() {
   }
 
 };
+const addMenuItem = async () => {
 
+  try {
+
+    await api.post("/menu", newItem);
+
+    fetchDashboardData();
+
+    setShowModal(false);
+
+    setNewItem({
+      name: "",
+      description: "",
+      price: "",
+      category: "",
+      image: "",
+      restaurant: "",
+      isAvailable: true
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+const deleteMenuItem = async (id) => {
+
+  try {
+
+    await api.delete(`/menu/${id}`);
+
+    fetchDashboardData();
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
   const totalOrders = orders.length;
 
   const revenue = orders.reduce(
@@ -106,9 +158,12 @@ function RestaurantDashboard() {
               Menu Management
             </h2>
 
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">
-              + Add Menu Item
-            </button>
+            <button
+  onClick={() => setShowModal(true)}
+  className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+>
+  + Add Menu Item
+</button>
 
           </div>
 
@@ -150,6 +205,16 @@ function RestaurantDashboard() {
                       ? "🟢 Available"
                       : "🔴 Unavailable"}
                   </td>
+                  <td>
+
+  <button
+    onClick={() => deleteMenuItem(item._id)}
+    className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+  >
+    Delete
+  </button>
+
+</td>
 
                 </tr>
 
@@ -186,7 +251,9 @@ function RestaurantDashboard() {
                 <th className="text-left">
                   Status
                 </th>
-
+                <th className="text-left">
+                  Actions
+                </th>
               </tr>
 
             </thead>
@@ -261,7 +328,116 @@ function RestaurantDashboard() {
         </div>
 
       </div>
+{showModal && (
 
+<div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+
+  <div className="bg-white rounded-xl p-6 w-[450px]">
+
+    <h2 className="text-2xl font-bold mb-5">
+      Add Menu Item
+    </h2>
+
+    <input
+      type="text"
+      placeholder="Name"
+      value={newItem.name}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          name: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-3"
+    />
+
+    <textarea
+      placeholder="Description"
+      value={newItem.description}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          description: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-3"
+    />
+
+    <input
+      type="number"
+      placeholder="Price"
+      value={newItem.price}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          price: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-3"
+    />
+
+    <input
+      type="text"
+      placeholder="Category"
+      value={newItem.category}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          category: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-3"
+    />
+
+    <input
+      type="text"
+      placeholder="Image URL"
+      value={newItem.image}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          image: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-3"
+    />
+
+    <input
+      type="text"
+      placeholder="Restaurant ID"
+      value={newItem.restaurant}
+      onChange={(e) =>
+        setNewItem({
+          ...newItem,
+          restaurant: e.target.value
+        })
+      }
+      className="border w-full p-3 rounded-lg mb-5"
+    />
+
+    <div className="flex justify-end gap-3">
+
+      <button
+        onClick={() => setShowModal(false)}
+        className="bg-gray-400 text-white px-5 py-2 rounded-lg"
+      >
+        Cancel
+      </button>
+
+      <button
+  onClick={addMenuItem}
+  className="bg-orange-500 text-white px-5 py-2 rounded-lg"
+>
+  Save
+</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+)}
     </>
   );
 }
