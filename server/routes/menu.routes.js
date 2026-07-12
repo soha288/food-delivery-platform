@@ -3,7 +3,7 @@ require('express')
 
 const router =
 express.Router()
-
+const authMiddleware = require('../middleware/auth.middleware');
 const {
   createMenuItem,getMenuItems,getMenuByRestaurant,updateMenuItem,deleteMenuItem
 } =
@@ -13,8 +13,9 @@ require(
 
 router.post(
   '/',
+  authMiddleware,
   createMenuItem
-)
+);
 router.get(
   '/',
   getMenuItems

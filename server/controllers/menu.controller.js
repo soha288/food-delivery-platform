@@ -1,30 +1,51 @@
+const Restaurant = require('../models/restaurant.model');
 const Menu =
 require('../models/menu.model')
 
-const createMenuItem =
-async (req, res) => {
+const createMenuItem = async (req, res) => {
 
   try {
 
-    const menuItem =
-      await Menu.create(
-        req.body
-      )
+    const restaurant = await Restaurant.findOne({
+      owner: req.user.id
+    });
+
+    if (!restaurant) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Restaurant not found for this owner"
+      });
+
+    }
+
+    const menuItem = await Menu.create({
+
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      image: req.body.image,
+      isAvailable: req.body.isAvailable,
+      restaurant: restaurant._id
+
+    });
 
     res.status(201).json({
       success: true,
       data: menuItem
-    })
+    });
 
   } catch (error) {
 
     res.status(500).json({
       success: false,
-      message:
-        error.message
-    })
+      message: error.message
+    });
+
   }
-}
+
+};
 const getMenuItems =
 async (req, res) => {
 

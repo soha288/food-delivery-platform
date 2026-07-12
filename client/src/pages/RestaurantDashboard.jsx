@@ -6,7 +6,7 @@ function RestaurantDashboard() {
   const [orders, setOrders] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
+  const [editingId, setEditingId] = useState(null);
 const [newItem, setNewItem] = useState({
   name: "",
   description: "",
@@ -53,11 +53,21 @@ const addMenuItem = async () => {
 
   try {
 
-    await api.post("/menu", newItem);
+    if (editingId) {
+
+      await api.put(`/menu/${editingId}`, newItem);
+
+    } else {
+
+      await api.post("/menu", newItem);
+
+    }
 
     fetchDashboardData();
 
     setShowModal(false);
+
+    setEditingId(null);
 
     setNewItem({
       name: "",
@@ -89,6 +99,23 @@ const deleteMenuItem = async (id) => {
     console.log(error);
 
   }
+
+};
+const editMenuItem = (item) => {
+
+  setEditingId(item._id);
+
+  setNewItem({
+    name: item.name,
+    description: item.description,
+    price: item.price,
+    category: item.category,
+    image: item.image,
+    restaurant: item.restaurant?._id || item.restaurant,
+    isAvailable: item.isAvailable
+  });
+
+  setShowModal(true);
 
 };
   const totalOrders = orders.length;
@@ -207,12 +234,23 @@ const deleteMenuItem = async (id) => {
                   </td>
                   <td>
 
+  <td className="flex gap-2 py-3">
+
+  <button
+    onClick={() => editMenuItem(item)}
+    className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+  >
+    Edit
+  </button>
+
   <button
     onClick={() => deleteMenuItem(item._id)}
     className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
   >
     Delete
   </button>
+
+</td>
 
 </td>
 
@@ -334,9 +372,9 @@ const deleteMenuItem = async (id) => {
 
   <div className="bg-white rounded-xl p-6 w-[450px]">
 
-    <h2 className="text-2xl font-bold mb-5">
-      Add Menu Item
-    </h2>
+   <h2 className="text-2xl font-bold mb-5">
+  {editingId ? "Edit Menu Item" : "Add Menu Item"}
+</h2>
 
     <input
       type="text"
@@ -402,18 +440,7 @@ const deleteMenuItem = async (id) => {
       className="border w-full p-3 rounded-lg mb-3"
     />
 
-    <input
-      type="text"
-      placeholder="Restaurant ID"
-      value={newItem.restaurant}
-      onChange={(e) =>
-        setNewItem({
-          ...newItem,
-          restaurant: e.target.value
-        })
-      }
-      className="border w-full p-3 rounded-lg mb-5"
-    />
+    
 
     <div className="flex justify-end gap-3">
 
@@ -428,7 +455,7 @@ const deleteMenuItem = async (id) => {
   onClick={addMenuItem}
   className="bg-orange-500 text-white px-5 py-2 rounded-lg"
 >
-  Save
+  {editingId ? "Update" : "Save"}
 </button>
 
     </div>
