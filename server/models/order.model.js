@@ -32,6 +32,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    restaurant: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Restaurant',
+  required: true
+},
 
     paymentMethod: {
       type: String,

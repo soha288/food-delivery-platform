@@ -5,11 +5,14 @@ const router =
 express.Router()
 const authMiddleware = require('../middleware/auth.middleware');
 const {
-  createMenuItem,getMenuItems,getMenuByRestaurant,updateMenuItem,deleteMenuItem
+  createMenuItem,
+  getMenuItems,
+  getMenuByRestaurant,
+  getMyMenu,
+  updateMenuItem,
+  deleteMenuItem
 } =
-require(
-'../controllers/menu.controller'
-)
+require('../controllers/menu.controller')
 
 router.post(
   '/',
@@ -19,6 +22,11 @@ router.post(
 router.get(
   '/',
   getMenuItems
+)
+router.get(
+  '/my-menu',
+  authMiddleware,
+  getMyMenu
 )
 router.get(
   '/restaurant/:restaurantId',

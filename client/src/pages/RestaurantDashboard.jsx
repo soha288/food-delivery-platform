@@ -13,7 +13,6 @@ const [newItem, setNewItem] = useState({
   price: "",
   category: "",
   image: "",
-  restaurant: "",
   isAvailable: true
 });
 
@@ -23,8 +22,8 @@ const [newItem, setNewItem] = useState({
 
   const fetchDashboardData = async () => {
     try {
-      const orderRes = await api.get("/orders");
-      const menuRes = await api.get("/menu");
+      const orderRes = await api.get("/orders/my-orders");
+      const menuRes = await api.get("/menu/my-menu");
 
       setOrders(orderRes.data.data);
       setMenuItems(menuRes.data.data);
@@ -70,14 +69,13 @@ const addMenuItem = async () => {
     setEditingId(null);
 
     setNewItem({
-      name: "",
-      description: "",
-      price: "",
-      category: "",
-      image: "",
-      restaurant: "",
-      isAvailable: true
-    });
+  name: "",
+  description: "",
+  price: "",
+  category: "",
+  image: "",
+  isAvailable: true
+});
 
   } catch (error) {
 
@@ -106,14 +104,13 @@ const editMenuItem = (item) => {
   setEditingId(item._id);
 
   setNewItem({
-    name: item.name,
-    description: item.description,
-    price: item.price,
-    category: item.category,
-    image: item.image,
-    restaurant: item.restaurant?._id || item.restaurant,
-    isAvailable: item.isAvailable
-  });
+  name: item.name,
+  description: item.description,
+  price: item.price,
+  category: item.category,
+  image: item.image,
+  isAvailable: item.isAvailable
+});
 
   setShowModal(true);
 
@@ -232,7 +229,7 @@ const editMenuItem = (item) => {
                       ? "🟢 Available"
                       : "🔴 Unavailable"}
                   </td>
-                  <td>
+                  
 
   <td className="flex gap-2 py-3">
 
@@ -252,7 +249,7 @@ const editMenuItem = (item) => {
 
 </td>
 
-</td>
+
 
                 </tr>
 
