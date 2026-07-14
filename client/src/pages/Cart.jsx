@@ -89,7 +89,7 @@ const placeOrder = async () => {
       items,
       totalAmount,
       deliveryAddress: localStorage.getItem("address"),
-paymentMethod: "Cash"
+paymentMethod: localStorage.getItem("paymentMethod")
     })
 
     // Remove all cart items

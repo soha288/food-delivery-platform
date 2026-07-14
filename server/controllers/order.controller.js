@@ -114,6 +114,32 @@ const getMyOrders = async (req, res) => {
   }
 
 };
+const getMyCustomerOrders = async (req, res) => {
+
+  try {
+
+    const orders = await Order.find({
+      user: req.user.id
+    })
+      .populate("user", "name email")
+      .populate("items.menuItem", "name price");
+
+    res.status(200).json({
+      success: true,
+      count: orders.length,
+      data: orders
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
+};
 const updateOrderStatus = async (req, res) => {
 
   try {
@@ -147,5 +173,6 @@ module.exports = {
   placeOrder,
   getOrders,
   getMyOrders,
+  getMyCustomerOrders,
   updateOrderStatus
 }

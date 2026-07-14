@@ -7,6 +7,7 @@ function Checkout() {
 
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
 
  const handleCheckout = () => {
 
@@ -20,6 +21,7 @@ function Checkout() {
 
   localStorage.setItem("address", address)
   localStorage.setItem("phone", phone)
+  localStorage.setItem("paymentMethod", paymentMethod);
 
   navigate("/cart?checkout=true")
 
@@ -52,12 +54,14 @@ function Checkout() {
         />
 
         <select
-          className="border w-full p-3 rounded-lg mb-6"
-        >
-          <option>Cash on Delivery</option>
-          <option>UPI</option>
-          <option>Card</option>
-        </select>
+  value={paymentMethod}
+  onChange={(e) => setPaymentMethod(e.target.value)}
+  className="border w-full p-3 rounded-lg mb-6"
+>
+  <option value="Cash">Cash</option>
+  <option value="UPI">UPI</option>
+  <option value="Card">Card</option>
+</select>
         <div className="bg-gray-100 rounded-lg p-4 mb-6">
 
   <h2 className="font-bold text-lg mb-2">
@@ -71,7 +75,7 @@ function Checkout() {
 
   <div className="flex justify-between mb-2">
     <span>Payment</span>
-    <span>Cash</span>
+    <span>{paymentMethod}</span>
   </div>
 
   <div className="flex justify-between">

@@ -201,6 +201,9 @@ const editMenuItem = (item) => {
                 <th className="text-left">Category</th>
                 <th className="text-left">Price</th>
                 <th className="text-left">Status</th>
+                <th className="text-left">
+  Actions
+</th>
 
               </tr>
 
@@ -271,27 +274,37 @@ const editMenuItem = (item) => {
 
           <table className="w-full">
 
-            <thead>
+          <thead>
 
-              <tr className="border-b">
+  <tr className="border-b">
 
-                <th className="text-left py-3">
-                  Customer
-                </th>
+    <th className="text-left py-3">
+      Customer
+    </th>
 
-                <th className="text-left">
-                  Total
-                </th>
+    <th className="text-left">
+      Items
+    </th>
 
-                <th className="text-left">
-                  Status
-                </th>
-                <th className="text-left">
-                  Actions
-                </th>
-              </tr>
+    <th className="text-left">
+      Payment
+    </th>
 
-            </thead>
+    <th className="text-left">
+      Total
+    </th>
+
+    <th className="text-left">
+      Status
+    </th>
+
+    <th className="text-left">
+      Actions
+    </th>
+
+  </tr>
+
+</thead>
 
             <tbody>
 
@@ -300,12 +313,34 @@ const editMenuItem = (item) => {
                 <tr key={order._id} className="border-b">
 
                   <td className="py-3">
-                    {order.user?.name}
-                  </td>
+{order.user?.name}
+</td>
 
-                  <td>
-                    ₹{order.totalAmount}
-                  </td>
+<td>
+
+{order.items.map((item, index) => (
+
+<div key={index}>
+
+{item.menuItem?.name} × {item.quantity}
+
+</div>
+
+))}
+
+</td>
+
+<td>
+
+{order.paymentMethod}
+
+</td>
+
+<td>
+
+₹{order.totalAmount}
+
+</td>
 
                   <td>
 

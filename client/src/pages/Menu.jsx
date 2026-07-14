@@ -39,23 +39,49 @@ const addToCart = async (item) => {
 
   try {
 
-    const userId = localStorage.getItem('userId')
+    const userId = localStorage.getItem("userId");
 
-    await api.post('/cart', {
+    const cartRes = await api.get(`/cart/${userId}`);
+
+    const cartItems = cartRes.data.data;
+
+    if (cartItems.length > 0) {
+
+      const existingRestaurant =
+        cartItems[0].menuItem.restaurant;
+
+      if (existingRestaurant.toString() !== restaurantId) {
+
+        const confirmClear = window.confirm(
+          "Your cart contains items from another restaurant.\n\nClick OK to clear the cart and add this item."
+        );
+
+        if (!confirmClear) return;
+
+        for (const cartItem of cartItems) {
+          await api.delete(`/cart/${cartItem._id}`);
+        }
+
+      }
+
+    }
+
+    await api.post("/cart", {
       user: userId,
       menuItem: item._id,
       quantity: 1
-    })
+    });
 
-    toast.success("Added to cart successfully")
+    toast.success("Added to cart successfully");
 
   } catch (error) {
 
-    console.log(error)
+    console.log(error);
+    toast.error("Something went wrong");
 
   }
 
-}
+};
   return (
 
     <>
