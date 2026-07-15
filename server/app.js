@@ -24,6 +24,8 @@ const cartRoutes =
 require(
 './routes/cart.routes'
 )
+const reviewRoutes =
+require("./routes/review.routes");
 const orderRoutes = require('./routes/order.routes')
 const app =
 express()
@@ -53,6 +55,10 @@ app.use(
 '/api/restaurants',
 restaurantRoutes
 )
+app.use(
+  "/api/reviews",
+  reviewRoutes
+);
 app.use('/api/orders', orderRoutes)
 app.get(
 '/',

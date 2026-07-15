@@ -31,6 +31,10 @@ new mongoose.Schema(
       type: Number,
       default: 0
     },
+    totalReviews: {
+  type: Number,
+  default: 0,
+},
 
     isOpen: {
       type: Boolean,

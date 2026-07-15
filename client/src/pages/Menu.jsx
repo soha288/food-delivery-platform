@@ -10,7 +10,8 @@ function Menu() {
   const { restaurantId } = useParams()
 
   const [menuItems, setMenuItems] = useState([])
-
+  const [reviews, setReviews] = useState([]);
+const [restaurant, setRestaurant] = useState(null);
   useEffect(() => {
 
     fetchMenu()
