@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
+import StarRating from "../components/StarRating";
 import api from '../services/api'
 
 function Menu() {
@@ -12,30 +13,40 @@ function Menu() {
   const [menuItems, setMenuItems] = useState([])
   const [reviews, setReviews] = useState([]);
 const [restaurant, setRestaurant] = useState(null);
+const [rating, setRating] = useState(5);
+const [reviewText, setReviewText] = useState("");
   useEffect(() => {
 
     fetchMenu()
 
   }, [])
 
-  const fetchMenu = async () => {
+ const fetchMenu = async () => {
 
-    try {
+  try {
 
-      const res =
-        await api.get(
-          `/menu/restaurant/${restaurantId}`
-        )
+    const menuRes =
+      await api.get(`/menu/restaurant/${restaurantId}`);
 
-      setMenuItems(res.data.data)
+    setMenuItems(menuRes.data.data);
 
-    } catch (error) {
+    const restaurantRes =
+      await api.get(`/restaurants/${restaurantId}`);
 
-      console.log(error)
+    setRestaurant(restaurantRes.data.data);
 
-    }
+    const reviewRes =
+      await api.get(`/reviews/${restaurantId}`);
+
+    setReviews(reviewRes.data.reviews);
+
+  } catch (error) {
+
+    console.log(error);
 
   }
+
+};
 const addToCart = async (item) => {
 
   try {
@@ -83,6 +94,42 @@ const addToCart = async (item) => {
   }
 
 };
+const submitReview = async () => {
+
+  try {
+
+    await api.post(
+      "/reviews",
+      {
+        restaurantId,
+        rating,
+        review: reviewText
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      }
+    );
+
+    toast.success("Review submitted!");
+
+    setReviewText("");
+
+    setRating(5);
+
+    fetchMenu();
+
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to submit review"
+    );
+
+  }
+
+};
   return (
 
     <>
@@ -91,11 +138,70 @@ const addToCart = async (item) => {
 
       <div className="p-8">
 
-        <h1 className="text-3xl font-bold mb-6">
+        <div className="mb-8">
 
-          Restaurant Menu
+  <h1 className="text-4xl font-bold">
 
-        </h1>
+    {restaurant?.name || "Restaurant"}
+
+  </h1>
+
+  <p className="text-gray-600 mt-2">
+
+    ⭐ {restaurant?.rating || 0}
+
+    {" "}({restaurant?.totalReviews || 0} Reviews)
+
+  </p>
+
+</div>
+<div className="mt-12">
+
+  <h2 className="text-3xl font-bold mb-6">
+
+    Customer Reviews
+
+  </h2>
+
+  {reviews.length === 0 ? (
+
+    <p>No reviews yet.</p>
+
+  ) : (
+
+    reviews.map((item) => (
+
+      <div
+        key={item._id}
+        className="bg-white shadow rounded-xl p-5 mb-4"
+      >
+
+        <p className="text-xl">
+
+          {"⭐".repeat(item.rating)}
+
+        </p>
+
+        <p className="mt-2">
+
+          {item.review}
+
+        </p>
+
+        <p className="text-gray-500 mt-3">
+
+          — {item.user?.name}
+
+        </p>
+
+      </div>
+
+    ))
+
+  )}
+
+</div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -137,6 +243,49 @@ const addToCart = async (item) => {
           
 
         </div>
+        <div className="bg-white shadow rounded-xl p-6 mt-8">
+
+  <h2 className="text-2xl font-bold mb-4">
+
+    Write a Review
+
+  </h2>
+
+  <StarRating
+
+    rating={rating}
+
+    onChange={setRating}
+
+  />
+
+  <textarea
+
+    value={reviewText}
+
+    onChange={(e)=>setReviewText(e.target.value)}
+
+    className="border rounded-lg w-full mt-4 p-3"
+
+    rows="4"
+
+    placeholder="Share your experience..."
+
+  />
+
+  <button
+
+    onClick={submitReview}
+
+    className="bg-orange-500 text-white px-6 py-3 rounded-lg mt-4 hover:bg-orange-600"
+
+  >
+
+    Submit Review
+
+  </button>
+
+</div>
 
       </div>
 
