@@ -8,6 +8,19 @@ The platform enables customers to browse restaurants, order food, manage their c
 
 ## 🚀 Features
 
+
+- User Authentication (JWT)
+- Role-Based Access (Customer, Restaurant Owner, Delivery Partner)
+- Restaurant Management
+- Menu Management
+- Cart Management
+- Order Placement
+- Order Tracking
+- Restaurant Reviews & Ratings
+- Restaurant Search & Filtering
+- Cash on Delivery (COD)
+- Razorpay Test Mode Payment Integration
+- Responsive UI
 ### 👤 Customer Module
 
 - User Login
