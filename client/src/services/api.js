@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://food-delivery-platform-ej8n.onrender.com/'
+  baseURL: 'https://food-delivery-platform-ej8n.onrender.com/api'
 });
 
 api.interceptors.request.use(
