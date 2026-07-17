@@ -11,21 +11,25 @@ const placeOrder = async (req, res) => {
       req.body.items[0].menuItem
     );
 
-    const order = await Order.create({
+   const order = await Order.create({
 
-      user: req.body.user,
+  user: req.body.user,
 
-      items: req.body.items,
+  items: req.body.items,
 
-      totalAmount: req.body.totalAmount,
+  totalAmount: req.body.totalAmount,
 
-      deliveryAddress: req.body.deliveryAddress,
+  deliveryAddress: req.body.deliveryAddress,
 
-      paymentMethod: req.body.paymentMethod,
+  paymentMethod: req.body.paymentMethod,
 
-      restaurant: firstMenu.restaurant
+  paymentId: req.body.paymentId,
 
-    });
+  razorpayOrderId: req.body.razorpayOrderId,
+
+  restaurant: firstMenu.restaurant
+
+});
 
     res.status(201).json({
 

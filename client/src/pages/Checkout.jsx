@@ -58,9 +58,8 @@ function Checkout() {
   onChange={(e) => setPaymentMethod(e.target.value)}
   className="border w-full p-3 rounded-lg mb-6"
 >
-  <option value="Cash">Cash</option>
-  <option value="UPI">UPI</option>
-  <option value="Card">Card</option>
+  <option value="Cash">Cash on Delivery</option>
+<option value="Razorpay">Razorpay</option>
 </select>
         <div className="bg-gray-100 rounded-lg p-4 mb-6">
 

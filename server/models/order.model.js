@@ -38,11 +38,21 @@ const orderSchema = new mongoose.Schema(
   required: true
 },
 
-    paymentMethod: {
-      type: String,
-      enum: ['Cash', 'UPI', 'Card'],
-      default: 'Cash'
-    },
+  paymentMethod: {
+    type: String,
+    enum: ["Cash", "Razorpay"],
+    default: "Cash"
+},
+
+paymentId: {
+  type: String,
+  default: null
+},
+
+razorpayOrderId: {
+  type: String,
+  default: null
+},
 
     status: {
       type: String,

@@ -27,6 +27,8 @@ require(
 const reviewRoutes =
 require("./routes/review.routes");
 const orderRoutes = require('./routes/order.routes')
+const paymentRoutes =
+require("./routes/payment.routes");
 const app =
 express()
 app.use(cors())
@@ -67,6 +69,10 @@ app.get(
 'Food Delivery API Running'
   )
 })
+app.use(
+  "/api/payment",
+  paymentRoutes
+);
 app.get(
   '/health',
   (req, res) => {

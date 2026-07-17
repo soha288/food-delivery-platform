@@ -71,7 +71,75 @@ const updateQuantity = async (id, quantity) => {
   }
 
 }
-const placeOrder = async () => {
+const handleRazorpayPayment = async () => {
+
+  try {
+
+    const orderRes = await api.post(
+      "/payment/create-order",
+      {
+        amount: grandTotal
+      }
+    );
+
+    const order = orderRes.data.order;
+
+    const options = {
+
+      key: "rzp_test_TEckstFeFs9sXU",
+
+      amount: order.amount,
+
+      currency: order.currency,
+
+      name: "Food Delivery",
+
+      description: "Food Order",
+
+      order_id: order.id,
+
+     handler: async function (response) {
+
+  toast.success("Payment Successful!");
+
+  await placeOrder(
+    response.razorpay_payment_id,
+    response.razorpay_order_id
+  );
+
+},
+
+      prefill: {
+
+        name: localStorage.getItem("name")
+
+      },
+
+      theme: {
+
+        color: "#f97316"
+
+      }
+
+    };
+
+    const razor = new window.Razorpay(options);
+
+    razor.open();
+
+  } catch (error) {
+
+    console.log(error);
+
+    toast.error("Payment Failed");
+
+  }
+
+};
+const placeOrder = async (
+  paymentId = null,
+  razorpayOrderId = null
+) => {
 
   try {
 
@@ -84,13 +152,16 @@ const placeOrder = async () => {
 
     const totalAmount = grandTotal
 
-    await api.post("/orders", {
-      user: userId,
-      items,
-      totalAmount,
-      deliveryAddress: localStorage.getItem("address"),
-paymentMethod: localStorage.getItem("paymentMethod")
-    })
+   await api.post("/orders", {
+  user: userId,
+  items,
+  totalAmount,
+  deliveryAddress: localStorage.getItem("address"),
+  paymentMethod: localStorage.getItem("paymentMethod"),
+
+  paymentId,
+  razorpayOrderId
+})
 
     // Remove all cart items
     for (const item of cartItems) {
@@ -216,7 +287,22 @@ toast.error("Failed to place order")
 ) : (
 
   <button
-    onClick={placeOrder}
+    onClick={() => {
+
+  const paymentMethod =
+    localStorage.getItem("paymentMethod");
+
+  if (paymentMethod === "Cash") {
+
+    placeOrder();
+
+  } else {
+
+    handleRazorpayPayment();
+
+  }
+
+}}
     className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"
   >
     Place Order
