@@ -5,6 +5,15 @@ A full-stack MERN Food Delivery Platform developed as part of my Web Development
 The platform enables customers to browse restaurants, order food, manage their cart, and track orders. It also includes separate dashboards for Restaurant Partners and Delivery Partners to demonstrate a multi-role food delivery system.
 
 ---
+## Project Highlights
+
+- Secure JWT Authentication
+- Role-Based Dashboards
+- Review & Rating System
+- Search & Filter Restaurants
+- Razorpay Payment Gateway Integration
+- Real-time Cart Management
+- Order Status Tracking
 
 ## 🚀 Features
 
@@ -57,22 +66,32 @@ The platform enables customers to browse restaurants, order food, manage their c
 ## 🛠 Tech Stack
 
 ### Frontend
-
 - React.js
-- Vite
 - Tailwind CSS
-- React Router DOM
 - Axios
+- React Router
 - React Hot Toast
 
 ### Backend
-
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
 - JWT Authentication
+- Razorpay API
 
+## Payment Integration
+
+The application supports two payment methods:
+
+- Cash on Delivery (COD)
+- Razorpay Test Mode
+
+Online payments are integrated using Razorpay Checkout. After a successful payment, the application stores:
+
+- Razorpay Payment ID
+- Razorpay Order ID
+- Selected Payment Method
 ---
 
 ## 📂 Project Structure
